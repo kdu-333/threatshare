@@ -1,0 +1,170 @@
+/* =========================================================
+   ThreatShare — Design Tokens
+   Restrained enterprise security palette. One typeface (Inter).
+   ========================================================= */
+:root {
+  /* Color — surfaces */
+  --color-bg: #F4F6F9;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #FAFBFC;
+  --color-border: #E2E7EE;
+  --color-border-strong: #CBD5E1;
+
+  /* Color — text */
+  --color-text-primary: #101828;
+  --color-text-secondary: #5A6472;
+  --color-text-muted: #8A93A1;
+  --color-text-inverse: #F8FAFC;
+
+  /* Color — accent (blue / cyan) */
+  --color-accent: #2554C7;
+  --color-accent-hover: #1E45A8;
+  --color-accent-soft: #E8EEFB;
+  --color-cyan: #0E7C9C;
+  --color-cyan-soft: #E3F4F8;
+
+  /* Color — severity / status */
+  --color-critical: #C0272D;
+  --color-critical-soft: #FBEAEA;
+  --color-high: #B5610E;
+  --color-high-soft: #FCEFE0;
+  --color-medium: #93720B;
+  --color-medium-soft: #FBF3D9;
+  --color-low: #3F7A4E;
+  --color-low-soft: #E7F3EA;
+
+  /* Sidebar (dark navy, used sparingly, not "hacker" black) */
+  --color-nav-bg: #101B2D;
+  --color-nav-bg-active: #1A2A45;
+  --color-nav-text: #B7C2D6;
+  --color-nav-text-active: #FFFFFF;
+  --color-nav-border: #22314B;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-base: 0.9375rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 1.875rem;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Shadow (subtle only) */
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 2px 6px rgba(16, 24, 40, 0.08);
+
+  --sidebar-width: 248px;
+  --topbar-height: 64px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, p {
+  margin: 0;
+}
+
+button, input {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Visible keyboard focus for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =========================================================
+   Dark mode — activated by data-theme="dark" on <html>
+   ========================================================= */
+[data-theme="dark"] {
+  --color-bg: #0D1117;
+  --color-surface: #161B22;
+  --color-surface-alt: #1C2230;
+  --color-border: #2A3345;
+  --color-border-strong: #3A4A60;
+
+  --color-text-primary: #E6EDF3;
+  --color-text-secondary: #8B949E;
+  --color-text-muted: #6A737D;
+  --color-text-inverse: #101828;
+
+  --color-accent: #4A90E2;
+  --color-accent-hover: #2F74C8;
+  --color-accent-soft: #1C2B44;
+  --color-cyan: #39B8D8;
+  --color-cyan-soft: #112233;
+
+  --color-critical: #FF4D5E;
+  --color-critical-soft: #2A1420;
+  --color-high: #F5A623;
+  --color-high-soft: #2A1E0A;
+  --color-medium: #E8C830;
+  --color-medium-soft: #231E08;
+  --color-low: #52C77A;
+  --color-low-soft: #0F2A1A;
+
+  --color-nav-bg: #0A0F1A;
+  --color-nav-bg-active: #131C30;
+  --color-nav-text: #8B98B0;
+  --color-nav-text-active: #E6EDF3;
+  --color-nav-border: #1E2940;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.5);
+}

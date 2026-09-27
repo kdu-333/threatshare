@@ -1,0 +1,96 @@
+.threat-table-wrap {
+  overflow-x: auto;
+}
+
+.threat-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+.threat-table thead th {
+  text-align: left;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  padding: 0 var(--space-3) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.threat-table tbody td {
+  padding: 10px var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.threat-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.threat-table tbody tr:hover {
+  background: var(--color-surface-alt);
+}
+
+.threat-table__ioc {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.threat-table__type,
+.threat-table__category,
+.threat-table__confidence {
+  font-size: var(--fs-xs);
+  color: var(--color-text-secondary);
+}
+
+.threat-table__date {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+.table-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.table-status-pill--confirmed {
+  background: rgba(52, 168, 83, 0.12);
+  color: #34a853;
+  border-color: rgba(52, 168, 83, 0.25);
+}
+
+.table-status-pill--under-investigation {
+  background: rgba(251, 188, 5, 0.12);
+  color: #e8a900;
+  border-color: rgba(251, 188, 5, 0.25);
+}
+
+.table-status-pill--pending {
+  background: rgba(99, 120, 160, 0.12);
+  color: #8eadd4;
+  border-color: rgba(99, 120, 160, 0.2);
+}
+
+.table-status-pill--dismissed {
+  background: rgba(120, 120, 140, 0.1);
+  color: #888;
+}
+
+.threat-table-empty {
+  padding: var(--space-4);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}

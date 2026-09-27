@@ -1,0 +1,64 @@
+.session-banner {
+    position: fixed;
+    bottom: var(--space-5);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--color-surface);
+    border: 1px solid var(--color-medium);
+    border-radius: var(--radius-lg);
+    padding: 12px var(--space-5);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    font-size: var(--fs-sm);
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    animation: bannerSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes bannerSlideUp {
+    from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+    to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+}
+
+.session-banner--urgent {
+    border-color: var(--color-critical);
+    background: var(--color-critical-soft);
+    animation: bannerPulse 1s ease-in-out infinite;
+}
+
+@keyframes bannerPulse {
+    0%, 100% { box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+    50%       { box-shadow: 0 8px 30px rgba(192, 39, 45, 0.35); }
+}
+
+.session-banner__icon {
+    font-size: 1rem;
+}
+
+.session-banner__text strong {
+    font-weight: 700;
+    color: var(--color-high);
+}
+
+.session-banner--urgent .session-banner__text strong {
+    color: var(--color-critical);
+}
+
+.session-banner__btn {
+    margin-left: var(--space-2);
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: #fff;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.session-banner__btn:hover {
+    background: var(--color-accent-hover);
+}

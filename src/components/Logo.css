@@ -1,0 +1,24 @@
+.ts-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ts-logo__img {
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  display: block;
+  flex-shrink: 0;
+}
+
+.ts-logo__word {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.ts-logo__word--light {
+  color: var(--color-nav-text-active);
+}

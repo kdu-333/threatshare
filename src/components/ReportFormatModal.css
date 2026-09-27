@@ -1,0 +1,107 @@
+.rfm-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: rfmFadeIn 0.15s ease;
+}
+
+@keyframes rfmFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.rfm {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    padding: var(--space-6);
+    width: min(440px, 92vw);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    animation: rfmSlideUp 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes rfmSlideUp {
+    from { transform: translateY(16px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.rfm__title {
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.rfm__sub {
+    font-size: var(--fs-sm);
+    color: var(--color-text-secondary);
+    margin: -8px 0 0;
+    text-align: center;
+}
+
+.rfm__options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    width: 100%;
+}
+
+.rfm__option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-4);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-alt);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.12s;
+    text-align: center;
+}
+
+.rfm__option:hover {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+    transform: translateY(-2px);
+}
+
+.rfm__icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.rfm__option strong {
+    font-size: var(--fs-base);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.rfm__option span:last-child {
+    font-size: var(--fs-xs);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.rfm__cancel {
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: var(--fs-sm);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s;
+}
+
+.rfm__cancel:hover {
+    color: var(--color-text-primary);
+}
