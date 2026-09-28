@@ -8,9 +8,9 @@ A real-time browser extension that inspects the website you are currently visiti
 
 - **Live Database Lookup**: Queries your ThreatShare backend (`GET /api/threats/check`) for the active tab's domain and URL.
 - **Visual Alert Badges**:
-  - 🔴 **Known Threat**: Displays a red warning badge, threat category, severity, confidence, and sightings count.
-  - 🟡 **Suspicious Signals**: Warns if the website uses plaintext HTTP, raw IP addresses, high-risk TLDs (e.g. `.zip`, `.top`, `.click`), or nested brand-spoofing subdomains.
-  - 🟢 **Clean / Normal**: Confirms no malicious sightings exist in your database.
+  - **Known Threat**: Displays a red warning badge, threat category, severity, confidence, and sightings count.
+  - **Suspicious Signals**: Warns if the website uses plaintext HTTP, raw IP addresses, high-risk TLDs (e.g. `.zip`, `.top`, `.click`), or nested brand-spoofing subdomains.
+  - **Clean / Normal**: Confirms no malicious sightings exist in your database.
 - **1-Click IoC Submission**: Report malicious phishing sites, malware drop sites, or botnets directly to ThreatShare without leaving your browser tab.
 - **Configurable Backend**: Works with both local development (`http://127.0.0.1:4000/api`) and deployed cloud environments (`https://threatshare-six.vercel.app/api`).
 
@@ -38,7 +38,7 @@ A real-time browser extension that inspects the website you are currently visiti
 4. Navigate to any website:
    - For example, visit `malicious-example.com` or `login-secure-update.net` (from the ThreatShare seed data).
    - Click the extension: it will instantly detect and show:
-     `🚨 Known Threat in ThreatShare!` with full indicator metadata!
+     `Known Threat in ThreatShare` with full indicator metadata!
 5. To report a new suspicious link:
-   - Open the extension, click **"🚨 Report This Website to ThreatShare"**, adjust category or confidence, and click **Submit Indicator**.
+   - Open the extension, click **"Report Website to ThreatShare"**, adjust category or confidence, and click **Submit Indicator**.
    - Open your ThreatShare dashboard to see your new IoC logged with real-time enrichment!

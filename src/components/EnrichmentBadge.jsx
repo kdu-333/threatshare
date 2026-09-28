@@ -3,7 +3,7 @@ import './EnrichmentBadge.css'
 const LABELS = {
     pending:  { text: 'Checking feeds…', cls: 'enrichment--pending', pulse: true },
     clean:    { text: 'No hits',         cls: 'enrichment--clean',   pulse: false },
-    malicious:{ text: '⚠ Malicious',     cls: 'enrichment--malicious', pulse: false },
+    malicious:{ text: 'Malicious',       cls: 'enrichment--malicious', pulse: false },
     error:    { text: 'Check failed',    cls: 'enrichment--error',   pulse: false },
     skipped:  { text: '—',              cls: 'enrichment--skipped',  pulse: false },
 }

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import SeverityBadge from './SeverityBadge.jsx'
+import { CheckIcon } from './icons.jsx'
 import './AlertPanel.css'
 
 function formatAlertDetail(detail) {
@@ -39,7 +40,7 @@ function AlertPanel({ alerts, onResolve }) {
   if (!alerts || alerts.length === 0) {
     return (
       <div className="alert-panel-empty">
-        <span className="alert-panel-empty__icon">✓</span>
+        <span className="alert-panel-empty__icon"><CheckIcon width={24} height={24} /></span>
         <p>No active alerts. All systems normal.</p>
       </div>
     )

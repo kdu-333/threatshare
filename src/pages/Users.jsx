@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import Sidebar from '../components/Sidebar.jsx'
 import Topbar from '../components/Topbar.jsx'
+import { SearchIcon } from '../components/icons.jsx'
 import './Users.css'
 import { apiRequest, getCurrentUser } from '../api.js'
 import { useEffect } from 'react'
@@ -115,7 +116,7 @@ function Users() {
 
                     <section className="users-toolbar">
                         <div className="search-box">
-                            <span aria-hidden="true">⌕</span>
+                            <span aria-hidden="true"><SearchIcon width={14} height={14} /></span>
                             <input
                                 type="text"
                                 placeholder="Search users"

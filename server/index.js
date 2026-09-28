@@ -38,6 +38,18 @@ function requireAuth(request, response, next) {
     }
 }
 
+function optionalAuth(request, _response, next) {
+    const token = request.headers.authorization?.replace('Bearer ', '')
+    if (token) {
+        try {
+            request.user = jwt.verify(token, jwtSecret)
+        } catch {
+            // invalid token, proceed as guest
+        }
+    }
+    next()
+}
+
 app.get('/api/health', (_request, response) => response.json({ status: 'ok', database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' }))
 
 app.post('/api/auth/login', async (request, response) => {
@@ -120,7 +132,7 @@ app.post('/api/threats', requireAuth, async (request, response) => {
 })
 
 // Check if indicator already exists (inline duplicate & re-sighting check)
-app.get('/api/threats/check', requireAuth, async (request, response) => {
+app.get('/api/threats/check', optionalAuth, async (request, response) => {
     const indicator = request.query.indicator?.trim()
     if (!indicator) return response.json({ exists: false })
     const normalizedValue = normalizeIndicator(indicator)
@@ -131,6 +143,8 @@ app.get('/api/threats/check', requireAuth, async (request, response) => {
         threat: {
             _id: existing._id,
             value: existing.value,
+            category: existing.category,
+            confidence: existing.confidence,
             status: existing.status,
             sightings: existing.sightings,
             severity: existing.severity,

@@ -59,9 +59,8 @@ async function updateTabBadge(tabId, url) {
     chrome.action.setBadgeBackgroundColor({ tabId, color: '#dc2626' }) // Red
     chrome.action.setTitle({ tabId, title: `ThreatShare: Detected ${threat.severity || 'Threat'} indicator!` })
   } else if (threat && threat.exists === false) {
-    chrome.action.setBadgeText({ tabId, text: '✓' })
-    chrome.action.setBadgeBackgroundColor({ tabId, color: '#16a34a' }) // Green
-    chrome.action.setTitle({ tabId, title: 'ThreatShare: No threat detected in database.' })
+    chrome.action.setBadgeText({ tabId, text: '' })
+    chrome.action.setTitle({ tabId, title: 'ThreatShare: Clean (no threat detected in database).' })
   } else {
     chrome.action.setBadgeText({ tabId, text: '' })
     chrome.action.setTitle({ tabId, title: 'ThreatShare Web Threat Scanner' })

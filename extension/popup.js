@@ -5,13 +5,14 @@
  */
 
 const DEFAULT_API_URL = 'http://127.0.0.1:4000/api'
-const DEFAULT_WEB_URL = 'http://localhost:5173'
+const DEFAULT_WEB_URL = 'https://threatshare-six.vercel.app'
 
 let currentTab = null
 let currentDomain = ''
 let currentUrl = ''
 let config = {
   apiUrl: DEFAULT_API_URL,
+  webUrl: DEFAULT_WEB_URL,
   token: '',
   user: null,
 }
@@ -29,12 +30,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 async function loadConfig() {
-  const data = await chrome.storage.local.get(['threatshare_api', 'threatshare_token', 'threatshare_user'])
+  const data = await chrome.storage.local.get(['threatshare_api', 'threatshare_web_url', 'threatshare_token', 'threatshare_user'])
   config.apiUrl = data.threatshare_api || DEFAULT_API_URL
+  config.webUrl = data.threatshare_web_url || DEFAULT_WEB_URL
   config.token = data.threatshare_token || ''
   config.user = data.threatshare_user ? JSON.parse(data.threatshare_user) : null
 
   document.getElementById('settingApiUrl').value = config.apiUrl
+  const webInput = document.getElementById('settingWebUrl')
+  if (webInput) webInput.value = config.webUrl
   updateAuthUI()
 }
 
@@ -76,7 +80,7 @@ function initTabs() {
   })
 
   document.getElementById('btnOpenDashboard').addEventListener('click', () => {
-    chrome.tabs.create({ url: `${DEFAULT_WEB_URL}/dashboard` })
+    chrome.tabs.create({ url: `${config.webUrl || DEFAULT_WEB_URL}/dashboard` })
   })
 }
 
@@ -173,7 +177,7 @@ function renderHeuristics(warnings) {
 
   box.style.display = 'flex'
   box.innerHTML = warnings
-    .map((w) => `<div class="heuristic-pill"><span>⚠️</span><span>${w}</span></div>`)
+    .map((w) => `<div class="heuristic-pill"><span>${w}</span></div>`)
     .join('')
 }
 
@@ -199,8 +203,9 @@ async function scanAgainstThreatShare(domain, url, heuristicWarnings) {
     if (data?.exists && data.threat) {
       const t = data.threat
       scanBox.className = 'status-card status-card--threat'
-      scanBox.querySelector('.status-icon-wrap').innerHTML = '🚨'
-      titleEl.textContent = `Known Threat in ThreatShare!`
+      scanBox.querySelector('.status-icon-wrap').innerHTML =
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
+      titleEl.textContent = 'Known Threat in ThreatShare'
       descEl.textContent = `Flagged as a confirmed threat indicator with ${t.sightings || 1} sighting(s).`
 
       // Show details
@@ -221,18 +226,21 @@ async function scanAgainstThreatShare(domain, url, heuristicWarnings) {
     detailsCard.style.display = 'none'
     if (heuristicWarnings.length > 0) {
       scanBox.className = 'status-card status-card--suspicious'
-      scanBox.querySelector('.status-icon-wrap').innerHTML = '⚠️'
+      scanBox.querySelector('.status-icon-wrap').innerHTML =
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
       titleEl.textContent = 'Suspicious Signals Detected'
       descEl.textContent = `${heuristicWarnings.length} suspicious pattern(s) identified. Consider reporting this URL.`
     } else {
       scanBox.className = 'status-card status-card--clean'
-      scanBox.querySelector('.status-icon-wrap').innerHTML = '🛡️'
+      scanBox.querySelector('.status-icon-wrap').innerHTML =
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>'
       titleEl.textContent = 'Clean / No Known Threat Records'
       descEl.textContent = 'This website has no malicious history reported in the ThreatShare database.'
     }
   } catch (err) {
     scanBox.className = 'status-card'
-    scanBox.querySelector('.status-icon-wrap').innerHTML = 'ℹ️'
+    scanBox.querySelector('.status-icon-wrap').innerHTML =
+      '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
     titleEl.textContent = 'ThreatShare Scanner Ready'
     descEl.textContent = heuristicWarnings.length
       ? `${heuristicWarnings.length} suspicious pattern(s) detected locally.`
@@ -243,7 +251,8 @@ async function scanAgainstThreatShare(domain, url, heuristicWarnings) {
 function showNotScannable(msg) {
   const scanBox = document.getElementById('scanResult')
   scanBox.className = 'status-card'
-  scanBox.querySelector('.status-icon-wrap').innerHTML = '🔒'
+  scanBox.querySelector('.status-icon-wrap').innerHTML =
+    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
   document.getElementById('statusTitle').textContent = 'Page Protected'
   document.getElementById('statusDesc').textContent = msg
   document.getElementById('siteDomain').textContent = 'Non-web page'
@@ -317,7 +326,7 @@ function initForms() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.message || 'Submission failed.')
 
-      showToast(`✓ Threat indicator successfully added!`, 'success')
+      showToast('Threat indicator successfully added.', 'success')
       document.getElementById('inputNotes').value = ''
       document.querySelector('.nav-tab[data-tab="tab-scan"]').click()
 
@@ -334,8 +343,13 @@ function initForms() {
   // Auth & Settings
   document.getElementById('btnSaveSettings').addEventListener('click', async () => {
     const newApi = document.getElementById('settingApiUrl').value.trim()
+    const newWeb = document.getElementById('settingWebUrl')?.value.trim()
     config.apiUrl = newApi || DEFAULT_API_URL
-    await chrome.storage.local.set({ threatshare_api: config.apiUrl })
+    config.webUrl = newWeb || DEFAULT_WEB_URL
+    await chrome.storage.local.set({
+      threatshare_api: config.apiUrl,
+      threatshare_web_url: config.webUrl,
+    })
     showToast('Settings saved.', 'success')
     checkApiHealth()
   })

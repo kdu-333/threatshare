@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar.jsx'
 import Topbar from '../components/Topbar.jsx'
 import EnrichmentBadge from '../components/EnrichmentBadge.jsx'
+import { AlertTriangleIcon } from '../components/icons.jsx'
 import './SubmitIoc.css'
 import { apiRequest, getCurrentUser } from '../api.js'
 
@@ -260,7 +261,7 @@ function SubmitIoc() {
                                     {checking && <span className="ioc-check-status">Checking feeds…</span>}
                                     {checkResult && (
                                         <div className="resighting-banner">
-                                            <span className="resighting-banner__icon">⚠️</span>
+                                            <span className="resighting-banner__icon"><AlertTriangleIcon width={18} height={18} /></span>
                                             <div className="resighting-banner__content">
                                                 <strong>Existing indicator detected in database:</strong>
                                                 <span>
@@ -347,7 +348,7 @@ function SubmitIoc() {
                                     <div className="bulk-input-header">
                                         <label htmlFor="bulkText">Paste Indicators (one per line):</label>
                                         <label className="bulk-file-upload-btn">
-                                            📁 Upload CSV / TXT
+                                            Upload CSV / TXT
                                             <input type="file" accept=".txt,.csv" onChange={handleFileUpload} style={{ display: 'none' }} />
                                         </label>
                                     </div>

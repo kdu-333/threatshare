@@ -10,6 +10,7 @@ import './Dashboard.css'
 import { useNavigate } from 'react-router-dom'
 import { apiRequest, getCurrentUser } from '../api.js'
 import { canAccessModule } from '../permissions.js'
+import { RefreshCwIcon, PlusIcon } from '../components/icons.jsx'
 import { useEffect, useState, useCallback } from 'react'
 
 // Build threats-per-day series for the last 7 days
@@ -94,12 +95,20 @@ function Dashboard() {
                 onClick={fetchData}
                 disabled={refreshing}
                 title="Refresh dashboard data"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
-                {refreshing ? '↻ Refreshing…' : '↻ Refresh'}
+                <RefreshCwIcon width={13} height={13} />
+                {refreshing ? 'Refreshing…' : 'Refresh'}
               </button>
               {canAccessModule(currentUser?.role, 'submit-ioc') && (
-                <button className="btn btn--primary" type="button" onClick={() => navigate('/submit-ioc')}>
-                  + Submit IoC
+                <button
+                  className="btn btn--primary"
+                  type="button"
+                  onClick={() => navigate('/submit-ioc')}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <PlusIcon width={13} height={13} />
+                  Submit IoC
                 </button>
               )}
             </div>

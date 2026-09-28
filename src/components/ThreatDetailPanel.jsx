@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import EnrichmentBadge from './EnrichmentBadge.jsx'
 import { apiRequest, getCurrentUser } from '../api.js'
 import { isAnalyst } from '../permissions.js'
+import { CloseIcon } from './icons.jsx'
 import './ThreatDetailPanel.css'
 
 const STATUS_COLORS = {
@@ -130,7 +131,7 @@ function ThreatDetailPanel({ threat, onClose, onThreatUpdated }) {
                         onClick={onClose}
                         aria-label="Close panel"
                     >
-                        ✕
+                        <CloseIcon />
                     </button>
                 </div>
 
@@ -217,13 +218,13 @@ function ThreatDetailPanel({ threat, onClose, onThreatUpdated }) {
                                 <div className={`tdp__comment-item tdp__comment-item--${c.type || 'comment'}`} key={c._id || i}>
                                     <div className="tdp__comment-head">
                                         <span className="tdp__comment-author">{c.author}</span>
-                                        <span className="tdp__comment-badge">{c.type === 'evidence' ? '📎 Evidence' : '💬 Note'}</span>
+                                        <span className="tdp__comment-badge">{c.type === 'evidence' ? 'Evidence' : 'Note'}</span>
                                         <span className="tdp__comment-time">{new Date(c.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                                     </div>
                                     <p className="tdp__comment-text">{c.text}</p>
                                     {c.url && (
                                         <a href={c.url} target="_blank" rel="noopener noreferrer" className="tdp__comment-url">
-                                            🔗 {c.url}
+                                            {c.url}
                                         </a>
                                     )}
                                 </div>
@@ -239,14 +240,14 @@ function ThreatDetailPanel({ threat, onClose, onThreatUpdated }) {
                                     className={`tdp__type-btn ${commentType === 'comment' ? 'tdp__type-btn--active' : ''}`}
                                     onClick={() => setCommentType('comment')}
                                 >
-                                    💬 Add Note
+                                    Add Note
                                 </button>
                                 <button
                                     type="button"
                                     className={`tdp__type-btn ${commentType === 'evidence' ? 'tdp__type-btn--active' : ''}`}
                                     onClick={() => setCommentType('evidence')}
                                 >
-                                    📎 Attach Evidence
+                                    Attach Evidence
                                 </button>
                             </div>
 
@@ -276,7 +277,7 @@ function ThreatDetailPanel({ threat, onClose, onThreatUpdated }) {
                                 className="btn btn--primary btn--small tdp__comment-submit"
                                 disabled={submitting || !commentText.trim()}
                             >
-                                {submitting ? 'Posting…' : commentType === 'evidence' ? '+ Save Evidence' : '+ Post Note'}
+                                {submitting ? 'Posting…' : commentType === 'evidence' ? 'Save Evidence' : 'Post Note'}
                             </button>
                         </form>
                     ) : (

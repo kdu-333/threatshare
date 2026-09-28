@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SearchIcon, BellIcon } from './icons.jsx'
+import { SearchIcon, BellIcon, SunIcon, MoonIcon } from './icons.jsx'
 import { useAlertCount } from '../hooks/useAlertCount.js'
 import { useTheme } from '../hooks/useTheme.js'
 import { canAccessModule } from '../permissions.js'
@@ -44,7 +44,7 @@ function Topbar({ title, user }) {
                     onClick={toggleTheme}
                     title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
                 >
-                    {theme === 'dark' ? '☀' : '🌙'}
+                    {theme === 'dark' ? <SunIcon width={16} height={16} /> : <MoonIcon width={16} height={16} />}
                 </button>
 
                 {/* Alerts bell — Analyst & Admin only */}

@@ -19,7 +19,12 @@
         <span class="version-tag">v1.0</span>
       </div>
       <div class="topbar-actions">
-        <button id="btnSettings" class="icon-btn" title="Extension Settings">⚙️</button>
+        <button id="btnSettings" class="icon-btn" title="Extension Settings" aria-label="Extension Settings">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+        </button>
       </div>
     </header>
 
@@ -78,10 +83,10 @@
       <!-- Quick Action Buttons -->
       <div class="quick-actions">
         <button id="btnQuickReport" class="btn btn--danger">
-          🚨 Report This Website to ThreatShare
+          Report Website to ThreatShare
         </button>
         <button id="btnOpenDashboard" class="btn btn--secondary">
-          Open ThreatShare Platform ↗
+          Open ThreatShare Platform
         </button>
       </div>
     </main>
@@ -142,6 +147,12 @@
           <label>Backend API Base URL</label>
           <input type="url" id="settingApiUrl" class="form-input" value="http://127.0.0.1:4000/api">
           <small class="form-hint">Local: <code>http://127.0.0.1:4000/api</code> | Cloud: <code>https://threatshare-six.vercel.app/api</code></small>
+        </div>
+
+        <div class="form-group">
+          <label>ThreatShare Web App URL</label>
+          <input type="url" id="settingWebUrl" class="form-input" value="https://threatshare-six.vercel.app">
+          <small class="form-hint">Cloud: <code>https://threatshare-six.vercel.app</code> | Local: <code>http://localhost:5173</code></small>
         </div>
 
         <div class="connection-status" id="connectionStatus">

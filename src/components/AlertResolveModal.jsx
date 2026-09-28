@@ -3,10 +3,10 @@ import SeverityBadge from './SeverityBadge.jsx'
 import './AlertResolveModal.css'
 
 const DISPOSITIONS = [
-    { label: '🛡️ Mitigated / Blocked', value: 'Mitigated / Blocked', desc: 'Indicator blocked in firewall, proxy, or endpoint EDR.' },
-    { label: '⚪ False Positive', value: 'False Positive', desc: 'Benign activity or verified internal infrastructure.' },
-    { label: '🚨 Escalated to SOC', value: 'Escalated to SOC', desc: 'Assigned to incident response team for active investigation.' },
-    { label: '✓ Dismissed', value: 'Dismissed', desc: 'No action required or duplicate detection.' },
+    { label: 'Mitigated / Blocked', value: 'Mitigated / Blocked', desc: 'Indicator blocked in firewall, proxy, or endpoint EDR.' },
+    { label: 'False Positive', value: 'False Positive', desc: 'Benign activity or verified internal infrastructure.' },
+    { label: 'Escalated to SOC', value: 'Escalated to SOC', desc: 'Assigned to incident response team for active investigation.' },
+    { label: 'Dismissed', value: 'Dismissed', desc: 'No action required or duplicate detection.' },
 ]
 
 function AlertResolveModal({ alert, onResolve, onCancel }) {

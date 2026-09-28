@@ -5,6 +5,7 @@ import Topbar from '../components/Topbar.jsx'
 import SeverityBadge from '../components/SeverityBadge.jsx'
 import ReportFormatModal from '../components/ReportFormatModal.jsx'
 import AlertResolveModal from '../components/AlertResolveModal.jsx'
+import { SearchIcon, DownloadIcon } from '../components/icons.jsx'
 import { apiRequest, getCurrentUser } from '../api.js'
 import { generateReport } from '../reportGenerators.js'
 import './Operations.css'
@@ -96,7 +97,7 @@ function Operations({ module }) {
 }
 
 function SearchView({ query, setQuery, threats }) {
-    return <section className="panel"><div className="panel__header"><h2>Indicator inventory</h2><span className="panel__meta">{threats.length} matches</span></div><div className="toolbar"><div className="search-box"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search value, type, category, or status" /></div></div><ThreatRows threats={threats} /></section>
+    return <section className="panel"><div className="panel__header"><h2>Indicator inventory</h2><span className="panel__meta">{threats.length} matches</span></div><div className="toolbar"><div className="search-box"><SearchIcon width={15} height={15} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search value, type, category, or status" /></div></div><ThreatRows threats={threats} /></section>
 }
 
 function ThreatRows({ threats }) {
@@ -201,7 +202,7 @@ function ReportsView({ reports, generated, currentUser, onGenerate }) {
                                     title={`Print ${report.name}`}
                                     onClick={() => handleGenerate(report._id, report.name, 'print')}
                                 >
-                                    {isGenerating ? '⏳ Generating…' : '🖨️ Print'}
+                                    {isGenerating ? 'Generating…' : 'Print'}
                                 </button>
                                 <button
                                     className={`btn btn--small ${isDone ? 'btn--secondary' : 'btn--primary'}`}
@@ -209,7 +210,7 @@ function ReportsView({ reports, generated, currentUser, onGenerate }) {
                                     disabled={isGenerating}
                                     onClick={() => setFormatPicker({ id: report._id, name: report.name })}
                                 >
-                                    {isGenerating ? '⏳ Processing…' : isDone ? '✓ Export options' : 'Export / Options'}
+                                    {isGenerating ? 'Processing…' : isDone ? 'Export options' : 'Export / Options'}
                                 </button>
                             </div>
                         </div>
@@ -292,15 +293,17 @@ function ActivityView({ entries, query, setQuery }) {
                         onClick={() => exportCSV(filteredEntries)}
                         disabled={filteredEntries.length === 0}
                         title="Export audit log as CSV"
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                     >
-                        ↓ Export CSV
+                        <DownloadIcon width={13} height={13} />
+                        Export CSV
                     </button>
                 </div>
             </div>
 
             <div className="toolbar activity-toolbar">
                 <div className="search-box">
-                    <span aria-hidden="true">⌕</span>
+                    <span aria-hidden="true"><SearchIcon width={14} height={14} /></span>
                     <input 
                         value={query} 
                         onChange={(event) => setQuery(event.target.value)} 

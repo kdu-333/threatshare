@@ -7,6 +7,7 @@ import ThreatDetailPanel from '../components/ThreatDetailPanel.jsx'
 import SessionWarningBanner from '../components/SessionWarningBanner.jsx'
 import { apiRequest, getCurrentUser } from '../api.js'
 import { isAnalyst, canAccessModule } from '../permissions.js'
+import { CheckIcon, SearchIcon, DownloadIcon } from '../components/icons.jsx'
 import './ThreatIntel.css'
 
 const severityFilters = ['all', 'Critical', 'High', 'Medium', 'Low']
@@ -153,7 +154,7 @@ function StatusCell({ threat, canEdit, onUpdated }) {
                             className={`status-dropdown__item status-dropdown__item--${s.toLowerCase().replace(/\s+/g, '-')}${s === threat.status ? ' status-dropdown__item--active' : ''}`}
                             onClick={(e) => { e.stopPropagation(); changeStatus(s) }}
                         >
-                            {s === threat.status && <span className="status-dropdown__check">✓</span>}
+                            {s === threat.status && <span className="status-dropdown__check"><CheckIcon width={12} height={12} /></span>}
                             {s}
                         </button>
                     ))}
@@ -240,8 +241,10 @@ function ThreatIntel() {
                                     type="button"
                                     onClick={() => setShowExportMenu((v) => !v)}
                                     disabled={filteredThreats.length === 0}
+                                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                                 >
-                                    ↓ Export
+                                    <DownloadIcon width={13} height={13} />
+                                    Export
                                 </button>
                                 {showExportMenu && (
                                     <div className="export-menu">
@@ -290,7 +293,7 @@ function ThreatIntel() {
 
                             <div className="toolbar">
                                 <div className="search-box">
-                                    <span aria-hidden="true">⌕</span>
+                                    <span aria-hidden="true"><SearchIcon width={14} height={14} /></span>
                                     <input
                                         type="text"
                                         placeholder="Search indicators"
