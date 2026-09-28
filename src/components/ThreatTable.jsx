@@ -6,7 +6,7 @@ function statusPillClass(status) {
   return `table-status-pill table-status-pill--${normalized}`
 }
 
-function truncate(value, max = 26) {
+function truncate(value, max = 38) {
   if (!value) return ''
   return value.length > max ? `${value.slice(0, max)}…` : value
 }

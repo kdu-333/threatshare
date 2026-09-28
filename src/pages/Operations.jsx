@@ -83,10 +83,10 @@ function Operations({ module }) {
                         setDismissed((items) => [...items, id])
                         setAlerts((items) => items.filter((alert) => alert._id !== id))
                     }} />}
-                    {module === 'reports' && <ReportsView reports={reports} generated={generated} onGenerate={async (id, name, format) => {
+                    {module === 'reports' && <ReportsView reports={reports} generated={generated} currentUser={currentUser} onGenerate={async (id, name, format) => {
                         await apiRequest(`/reports/${id}/generate`, { method: 'POST' })
                         setGenerated((items) => [...items, id])
-                        await generateReport(name, format)
+                        await generateReport(name, format, currentUser)
                     }} />}
                     {module === 'activity' && <ActivityView entries={activities} query={query} setQuery={setQuery} />}
                 </main>
@@ -159,7 +159,7 @@ function AlertsView({ alerts, dismissed, onDismiss, onResolve }) {
     )
 }
 
-function ReportsView({ reports, generated, onGenerate }) {
+function ReportsView({ reports, generated, currentUser, onGenerate }) {
     const [generating, setGenerating] = useState([])
     const [genError, setGenError] = useState({})
     const [formatPicker, setFormatPicker] = useState(null) // { id, name }
@@ -193,14 +193,25 @@ function ReportsView({ reports, generated, onGenerate }) {
                         </div>
                         <div className="report-card__footer">
                             <span>Last run {report.lastRun}</span>
-                            <button
-                                className={`btn btn--small ${isDone ? 'btn--secondary' : 'btn--primary'}`}
-                                type="button"
-                                disabled={isGenerating}
-                                onClick={() => setFormatPicker({ id: report._id, name: report.name })}
-                            >
-                                {isGenerating ? '⏳ Generating…' : isDone ? '✓ Download again' : 'Generate'}
-                            </button>
+                            <div className="report-card__actions">
+                                <button
+                                    className="btn btn--secondary btn--small"
+                                    type="button"
+                                    disabled={isGenerating}
+                                    title={`Print ${report.name}`}
+                                    onClick={() => handleGenerate(report._id, report.name, 'print')}
+                                >
+                                    {isGenerating ? '⏳ Generating…' : '🖨️ Print'}
+                                </button>
+                                <button
+                                    className={`btn btn--small ${isDone ? 'btn--secondary' : 'btn--primary'}`}
+                                    type="button"
+                                    disabled={isGenerating}
+                                    onClick={() => setFormatPicker({ id: report._id, name: report.name })}
+                                >
+                                    {isGenerating ? '⏳ Processing…' : isDone ? '✓ Export options' : 'Export / Options'}
+                                </button>
+                            </div>
                         </div>
                     </article>
                 )
@@ -210,6 +221,7 @@ function ReportsView({ reports, generated, onGenerate }) {
         {formatPicker && (
             <ReportFormatModal
                 reportName={formatPicker.name}
+                user={currentUser}
                 onSelect={(format) => {
                     const { id, name } = formatPicker
                     setFormatPicker(null)

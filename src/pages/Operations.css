@@ -122,6 +122,13 @@
     margin-top: auto;
     color: var(--color-text-muted);
     font-size: var(--fs-xs);
+    flex-wrap: wrap;
+}
+
+.report-card__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
 }
 
 .toggle-row {
@@ -349,4 +356,96 @@
     background: var(--color-accent) !important;
     color: #ffffff !important;
     border-color: var(--color-accent) !important;
-}
+}
+
+/* Print Styles */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 14mm;
+    }
+
+    /* Hide non-printable interface elements */
+    .sidebar,
+    .topbar,
+    .rfm-backdrop,
+    .page-header button,
+    .report-card__footer button,
+    .pagination,
+    .search-box,
+    .module-row__actions,
+    .session-banner {
+        display: none !important;
+    }
+
+    body,
+    .dashboard-shell,
+    .dashboard-main,
+    .page-shell,
+    .operations-page {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        min-height: auto !important;
+        display: block !important;
+    }
+
+    .page-header {
+        border-bottom: 2px solid #1e3a8a !important;
+        padding-bottom: 8px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .page-header h2 {
+        color: #1e3a8a !important;
+        font-size: 18pt !important;
+    }
+
+    .report-grid {
+        display: block !important;
+    }
+
+    .report-card {
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        margin-bottom: 16px !important;
+        padding: 16px !important;
+        background: #ffffff !important;
+    }
+
+    .report-card h3 {
+        color: #1e3a8a !important;
+    }
+
+    .report-card p {
+        color: #334155 !important;
+    }
+
+    .module-table {
+        border: 1px solid #cbd5e1 !important;
+        page-break-inside: auto;
+    }
+
+    .module-table tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .module-table th {
+        background: #1e3a8a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .module-table td {
+        border-bottom: 1px solid #e2e8f0 !important;
+        color: #1e293b !important;
+    }
+}
+

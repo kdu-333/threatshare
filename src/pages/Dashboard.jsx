@@ -111,26 +111,32 @@ function Dashboard() {
             ))}
           </section>
 
-          <section className="dashboard-grid">
-            <div className="panel panel--table">
-              <div className="panel__header">
-                <h2>Recent Threats</h2>
-                <button type="button" className="link link-button" onClick={() => navigate('/threat-intel')}>View all</button>
-              </div>
-              <ThreatTable threats={data.threats.slice(0, 6).map((threat) => ({ ...threat, id: threat._id, date: threat.createdAt?.slice(0, 10) }))} />
+          {/* 1. Recent Threats (Full width) */}
+          <section className="panel panel--table">
+            <div className="panel__header">
+              <h2>Recent Threats</h2>
+              <button type="button" className="link link-button" onClick={() => navigate('/threat-intel')}>View all</button>
             </div>
-
-            <div className="panel panel--alerts">
-              <div className="panel__header">
-                <h2>Recent Alerts</h2>
-                {canAccessModule(currentUser?.role, 'alerts') && (
-                  <button type="button" className="link link-button" onClick={() => navigate('/alerts')}>View all</button>
-                )}
-              </div>
-              <AlertPanel alerts={data.alerts.slice(0, 6).map((alert) => ({ ...alert, id: alert._id, time: 'Recently' }))} />
-            </div>
+            <ThreatTable threats={data.threats.slice(0, 6).map((threat) => ({ ...threat, id: threat._id, date: threat.createdAt?.slice(0, 10) }))} />
           </section>
 
+          {/* 2. Recent Alerts (Full width, placed below Recent Threats and above Threat Activity / Categories) */}
+          <section className="panel panel--alerts">
+            <div className="panel__header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <h2>Recent Alerts</h2>
+                {data.alerts?.length > 0 && (
+                  <span className="panel__badge-count">{data.alerts.length}</span>
+                )}
+              </div>
+              {canAccessModule(currentUser?.role, 'alerts') && (
+                <button type="button" className="link link-button" onClick={() => navigate('/alerts')}>View all</button>
+              )}
+            </div>
+            <AlertPanel alerts={data.alerts.slice(0, 6).map((alert) => ({ ...alert, id: alert._id, time: 'Recently' }))} />
+          </section>
+
+          {/* 3. Threat Activity and Categories (Split grid) */}
           <section className="dashboard-grid dashboard-grid--split">
             <div className="panel panel--chart">
               <div className="panel__header">
