@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThreatShare Scanner</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="extension-container">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="logo">
+        <svg class="logo-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L3 7V12C3 17.5 7 21.5 12 23C17 21.5 21 17.5 21 12V7L12 2Z" fill="#2554c7" stroke="#38bdf8" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M12 8V13M12 16H12.01" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="logo-text">ThreatShare</span>
+        <span class="version-tag">v1.0</span>
+      </div>
+      <div class="topbar-actions">
+        <button id="btnSettings" class="icon-btn" title="Extension Settings">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Nav Tabs -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="tab-scan">Scanner</button>
+      <button class="nav-tab" data-tab="tab-submit">Submit IoC</button>
+      <button class="nav-tab" data-tab="tab-auth">Connect</button>
+    </nav>
+
+    <!-- TAB 1: SCANNER -->
+    <main id="tab-scan" class="tab-pane active">
+      <!-- Current Site Target Card -->
+      <section class="target-card">
+        <div class="target-card__header">
+          <span id="siteProtocol" class="protocol-badge">HTTPS</span>
+          <span id="siteDomain" class="target-domain">Loading...</span>
+        </div>
+        <div class="target-card__url" id="siteUrl" title="Click to copy">Detecting active website...</div>
+      </section>
+
+      <!-- Scan Result Box -->
+      <section id="scanResult" class="status-card status-card--loading">
+        <div class="status-icon-wrap">
+          <div class="spinner"></div>
+        </div>
+        <div class="status-details">
+          <h3 id="statusTitle">Scanning with ThreatShare...</h3>
+          <p id="statusDesc">Querying threat intelligence database and evaluating heuristics.</p>
+        </div>
+      </section>
+
+      <!-- Threat Details (Hidden by default, shown if threat detected) -->
+      <section id="threatDetailsCard" class="threat-details-card" style="display: none;">
+        <div class="detail-row">
+          <span>Threat Category:</span>
+          <strong id="detCategory">—</strong>
+        </div>
+        <div class="detail-row">
+          <span>Severity:</span>
+          <span id="detSeverity" class="badge-severity">—</span>
+        </div>
+        <div class="detail-row">
+          <span>Confidence:</span>
+          <strong id="detConfidence">—</strong>
+        </div>
+        <div class="detail-row">
+          <span>Status:</span>
+          <strong id="detStatus">—</strong>
+        </div>
+      </section>
+
+      <!-- Heuristic Warnings (if any) -->
+      <div id="heuristicAlerts" class="heuristic-alerts" style="display: none;"></div>
+
+      <!-- Quick Action Buttons -->
+      <div class="quick-actions">
+        <button id="btnQuickReport" class="btn btn--danger">
+          🚨 Report This Website to ThreatShare
+        </button>
+        <button id="btnOpenDashboard" class="btn btn--secondary">
+          Open ThreatShare Platform ↗
+        </button>
+      </div>
+    </main>
+
+    <!-- TAB 2: SUBMIT IOC -->
+    <section id="tab-submit" class="tab-pane">
+      <form id="submitIocForm" class="submit-form">
+        <div class="form-group">
+          <label>Target Indicator</label>
+          <div class="radio-toggle">
+            <label class="radio-label">
+              <input type="radio" name="targetType" value="url" checked> Full URL
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="targetType" value="domain"> Domain Only
+            </label>
+          </div>
+          <input type="text" id="inputIndicator" class="form-input" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label>Category</label>
+            <select id="selectCategory" class="form-input">
+              <option value="Phishing">Phishing</option>
+              <option value="Malware">Malware</option>
+              <option value="Suspicious Activity" selected>Suspicious Activity</option>
+              <option value="Ransomware">Ransomware</option>
+              <option value="Botnet">Botnet</option>
+              <option value="Reconnaissance">Reconnaissance</option>
+            </select>
+          </div>
+
+          <div class="form-group flex-1">
+            <label>Confidence (<span id="confValue">85%</span>)</label>
+            <input type="range" id="inputConfidence" min="10" max="100" value="85" class="range-slider">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Analyst Observation Notes (Optional)</label>
+          <textarea id="inputNotes" class="form-input form-textarea" rows="2" placeholder="e.g. Credential harvesting login page mimicking corporate SSO..."></textarea>
+        </div>
+
+        <button type="submit" id="btnSubmitThreat" class="btn btn--primary btn--full">
+          Submit Indicator to ThreatShare
+        </button>
+      </form>
+    </section>
+
+    <!-- TAB 3: AUTH & SETTINGS -->
+    <section id="tab-auth" class="tab-pane">
+      <div class="settings-box">
+        <h3>ThreatShare Connection</h3>
+        <p class="settings-desc">Connect the extension to your local or deployed ThreatShare instance.</p>
+
+        <div class="form-group">
+          <label>Backend API Base URL</label>
+          <input type="url" id="settingApiUrl" class="form-input" value="http://127.0.0.1:4000/api">
+          <small class="form-hint">Local: <code>http://127.0.0.1:4000/api</code> | Cloud: <code>https://threatshare-six.vercel.app/api</code></small>
+        </div>
+
+        <div class="connection-status" id="connectionStatus">
+          <span class="status-dot"></span>
+          <span id="connStatusText">Checking connection...</span>
+        </div>
+
+        <hr class="divider">
+
+        <h4>Analyst Authentication</h4>
+        <div id="authLoggedOut">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="authEmail" class="form-input" placeholder="admin@threatshare.local">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="authPassword" class="form-input" placeholder="••••••••">
+          </div>
+          <button type="button" id="btnLogin" class="btn btn--primary btn--full">
+            Log In to ThreatShare
+          </button>
+        </div>
+
+        <div id="authLoggedIn" style="display: none;">
+          <div class="user-badge">
+            <span class="user-avatar" id="userInitials">KD</span>
+            <div class="user-info">
+              <strong id="userName">Krystian Daniel</strong>
+              <span id="userRole">Administrator</span>
+            </div>
+          </div>
+          <button type="button" id="btnLogout" class="btn btn--secondary btn--full btn--small">
+            Log Out
+          </button>
+        </div>
+
+        <button type="button" id="btnSaveSettings" class="btn btn--secondary btn--full" style="margin-top: 12px;">
+          Save API Settings
+        </button>
+      </div>
+    </section>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
