@@ -138,6 +138,9 @@ app.get('/api/threats/check', optionalAuth, async (request, response) => {
     const normalizedValue = normalizeIndicator(indicator)
     const existing = await Threat.findOne({ normalizedValue })
     if (!existing) return response.json({ exists: false })
+    if (existing.status === 'Dismissed') {
+        return response.json({ exists: false, isDismissed: true })
+    }
     response.json({
         exists: true,
         threat: {
@@ -221,6 +224,14 @@ app.patch('/api/threats/:id/status', requireAuth, async (request, response) => {
     if (!threat) return response.status(404).json({ message: 'Threat not found.' })
     await Activity.create({ action: `Status changed to ${status}`, actor: request.user.name, target: threat.value, time: 'Just now', userId: request.user.id })
     response.json(threat)
+})
+
+app.delete('/api/threats/:id', requireAuth, async (request, response) => {
+    if (!isAuthorizedAnalyst(request.user.role)) return response.status(403).json({ message: 'Only Analysts and Administrators can delete indicators.' })
+    const threat = await Threat.findByIdAndDelete(request.params.id)
+    if (!threat) return response.status(404).json({ message: 'Threat not found.' })
+    await Activity.create({ action: 'Deleted indicator', actor: request.user.name, target: threat.value, time: 'Just now', userId: request.user.id })
+    response.json({ message: 'Indicator deleted successfully.' })
 })
 
 // Threat Comments & Evidence notes

@@ -203,7 +203,7 @@ async function scanAgainstThreatShare(domain, url, heuristicWarnings) {
       if (resUrl.ok) data = await resUrl.json()
     }
 
-    if (data?.exists && data.threat) {
+    if (data?.exists && data.threat && data.threat.status !== 'Dismissed') {
       const t = data.threat
       scanBox.className = 'status-card status-card--threat'
       scanBox.querySelector('.status-icon-wrap').innerHTML =

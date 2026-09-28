@@ -42,14 +42,14 @@ async function checkUrlThreat(url) {
     const res = await fetch(`${apiUrl}/threats/check?indicator=${encodeURIComponent(domain)}`, { headers })
     if (res.ok) {
       const data = await res.json()
-      if (data.exists && data.threat) return data.threat
+      if (data.exists && data.threat && data.threat.status !== 'Dismissed') return data.threat
     }
 
     // Check full URL
     const resUrl = await fetch(`${apiUrl}/threats/check?indicator=${encodeURIComponent(url)}`, { headers })
     if (resUrl.ok) {
       const data = await resUrl.json()
-      if (data.exists && data.threat) return data.threat
+      if (data.exists && data.threat && data.threat.status !== 'Dismissed') return data.threat
     }
 
     return { exists: false }
