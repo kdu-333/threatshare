@@ -30,15 +30,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 
 async function loadConfig() {
-  const data = await chrome.storage.local.get(['threatshare_api', 'threatshare_web_url', 'threatshare_token', 'threatshare_user'])
+  const data = await chrome.storage.local.get(['threatshare_api', 'threatshare_web_url', 'threatshare_token', 'threatshare_user', 'threatshare_overlay'])
   config.apiUrl = data.threatshare_api || DEFAULT_API_URL
   config.webUrl = data.threatshare_web_url || DEFAULT_WEB_URL
   config.token = data.threatshare_token || ''
   config.user = data.threatshare_user ? JSON.parse(data.threatshare_user) : null
+  config.overlay = data.threatshare_overlay !== false
 
   document.getElementById('settingApiUrl').value = config.apiUrl
   const webInput = document.getElementById('settingWebUrl')
   if (webInput) webInput.value = config.webUrl
+  const chkOverlay = document.getElementById('chkOverlay')
+  if (chkOverlay) chkOverlay.checked = config.overlay
   updateAuthUI()
 }
 
@@ -344,11 +347,15 @@ function initForms() {
   document.getElementById('btnSaveSettings').addEventListener('click', async () => {
     const newApi = document.getElementById('settingApiUrl').value.trim()
     const newWeb = document.getElementById('settingWebUrl')?.value.trim()
+    const overlayVal = document.getElementById('chkOverlay')?.checked ?? true
     config.apiUrl = newApi || DEFAULT_API_URL
     config.webUrl = newWeb || DEFAULT_WEB_URL
+    config.overlay = overlayVal
     await chrome.storage.local.set({
       threatshare_api: config.apiUrl,
       threatshare_web_url: config.webUrl,
+      threatshare_web: config.webUrl,
+      threatshare_overlay: config.overlay,
     })
     showToast('Settings saved.', 'success')
     checkApiHealth()
