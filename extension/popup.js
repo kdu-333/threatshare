@@ -75,6 +75,12 @@ function initTabs() {
       tab.classList.add('active')
       const targetId = tab.getAttribute('data-tab')
       document.getElementById(targetId)?.classList.add('active')
+
+      if (targetId === 'tab-auth') {
+        checkApiHealth()
+      } else if (targetId === 'tab-scan') {
+        initActiveTab()
+      }
     })
   })
 
@@ -84,6 +90,10 @@ function initTabs() {
 
   document.getElementById('btnOpenDashboard').addEventListener('click', () => {
     chrome.tabs.create({ url: `${config.webUrl || DEFAULT_WEB_URL}/dashboard` })
+  })
+
+  document.getElementById('connectionStatus')?.addEventListener('click', () => {
+    checkApiHealth()
   })
 }
 
@@ -415,18 +425,28 @@ function initForms() {
 async function checkApiHealth() {
   const dot = document.querySelector('.status-dot')
   const text = document.getElementById('connStatusText')
+  if (!dot || !text) return
+
+  const inputUrl = document.getElementById('settingApiUrl')?.value?.trim()
+  const targetApi = inputUrl || config.apiUrl || DEFAULT_API_URL
+
+  dot.className = 'status-dot'
+  text.textContent = 'Checking connection...'
 
   try {
-    const res = await fetch(`${config.apiUrl}/health`, { signal: AbortSignal.timeout(3000) })
+    const res = await fetch(`${targetApi}/health`, { signal: AbortSignal.timeout(3000) })
     if (res.ok) {
+      const data = await res.json().catch(() => ({}))
       dot.className = 'status-dot status-dot--connected'
-      text.textContent = 'ThreatShare Backend Connected'
+      text.textContent = data.database === 'connected'
+        ? 'ThreatShare Backend Connected'
+        : 'Backend Connected (DB Reconnecting...)'
       return
     }
     throw new Error()
   } catch {
     dot.className = 'status-dot status-dot--error'
-    text.textContent = 'Backend Offline or Unreachable'
+    text.textContent = 'Backend Offline or Unreachable (Click to retry)'
   }
 }
 

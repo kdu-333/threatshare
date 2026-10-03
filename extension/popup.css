@@ -497,6 +497,14 @@ body {
   gap: 6px;
   font-size: 11px;
   color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 0;
+  transition: opacity 0.2s;
+}
+
+.connection-status:hover {
+  opacity: 0.85;
 }
 
 .status-dot {
