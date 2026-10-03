@@ -4,7 +4,7 @@
  * and 1-click submission to ThreatShare backend.
  */
 
-const DEFAULT_API_URL = 'http://127.0.0.1:4000/api'
+const DEFAULT_API_URL = 'https://threatshare-api.onrender.com/api'
 const DEFAULT_WEB_URL = 'https://threatshare-six.vercel.app'
 
 let currentTab = null
@@ -31,7 +31,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadConfig() {
   const data = await chrome.storage.local.get(['threatshare_api', 'threatshare_web_url', 'threatshare_token', 'threatshare_user', 'threatshare_overlay'])
-  config.apiUrl = data.threatshare_api || DEFAULT_API_URL
+  
+  // Automatically migrate legacy localhost URL to production Render cloud API
+  if (!data.threatshare_api || data.threatshare_api === 'http://127.0.0.1:4000/api') {
+    config.apiUrl = DEFAULT_API_URL
+    await chrome.storage.local.set({ threatshare_api: DEFAULT_API_URL })
+  } else {
+    config.apiUrl = data.threatshare_api
+  }
+
   config.webUrl = data.threatshare_web_url || DEFAULT_WEB_URL
   config.token = data.threatshare_token || ''
   config.user = data.threatshare_user ? JSON.parse(data.threatshare_user) : null

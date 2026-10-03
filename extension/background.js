@@ -6,7 +6,7 @@
  * - Real-time badge indicator updates
  */
 
-const DEFAULT_API = 'http://127.0.0.1:4000/api'
+const DEFAULT_API = 'https://threatshare-api.onrender.com/api'
 const DEFAULT_WEB = 'https://threatshare-six.vercel.app'
 
 async function getConfig() {
@@ -16,8 +16,12 @@ async function getConfig() {
     'threatshare_token',
     'threatshare_overlay',
   ])
+  const apiUrl = (!data.threatshare_api || data.threatshare_api === 'http://127.0.0.1:4000/api')
+    ? DEFAULT_API
+    : data.threatshare_api
+
   return {
-    apiUrl: data.threatshare_api || DEFAULT_API,
+    apiUrl,
     webUrl: data.threatshare_web || DEFAULT_WEB,
     token: data.threatshare_token || '',
     overlayEnabled: data.threatshare_overlay !== false, // default true
